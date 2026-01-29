@@ -1,0 +1,135 @@
+[server]
+hostname = "localhost"
+# offset  = 10
+
+[user_store]
+type = "read_only_ldap"
+
+[keystore.primary]
+file_name = "repository/resources/security/wso2carbon.jks"
+password = "wso2carbon"
+alias = "wso2carbon"
+key_password = "wso2carbon"
+dbpassword ="$secret{dbpass1}"
+
+[truststore]
+file_name = "repository/resources/security/client-truststore.jks"
+password = "wso2carbon"
+alias = "symmetric.key.value"
+algorithm = "AES"
+dbpassword ="$secret{dbpass1}"
+
+## Following are set of example configs. Please refer docs for complete set of configurations.
+
+# [transport.http]
+# socket_timeout = 180000   # timeout in milliseconds
+# disable_connection_keepalive = false
+# connection_timeout = 90000 # in milliseconds
+
+# [transport.jms]
+# sender_enable = true
+# listener_enable = true
+
+# [[transport.jms.sender]]
+# name = "myQueueSender"
+# parameter.initial_naming_factory = "org.apache.activemq.jndi.ActiveMQInitialContextFactory"
+# parameter.provider_url = "tcp://localhost:61616"
+# parameter.connection_factory_name = "QueueConnectionFactory"
+# parameter.connection_factory_type = "queue"
+# parameter.cache_level = "producer"
+
+
+#[[transport.jms.listener]]
+# name = "myQueueConnectionFactory"
+# parameter.initial_naming_factory = "org.apache.activemq.jndi.ActiveMQInitialContextFactory"
+# parameter.provider_url = "tcp://localhost:61616"
+# parameter.connection_factory_name = "QueueConnectionFactory"
+# parameter.connection_factory_type = "queue"
+
+# [transport.jndi.connection_factories]
+# 'connectionfactory.QueueConnectionFactory' = "amqp://admin:admin@clientID/carbon?brokerlist='tcp://localhost:5675'"
+# 'connectionfactory.TopicConnectionFactory' = "amqp://admin:admin@clientID/carbon?brokerlist='tcp://localhost:5675'"
+
+# [transport.jndi.queue]
+# jndiNameOfQueue = "physicalNameOfQueue"
+
+# [transport.jndi.topic]
+# jndiNameOfTopic = "physicalNameOfTopic"
+
+# [transport.rabbitmq]
+# sender_enable = true
+# listener_enable = true
+
+# [[transport.rabbitmq.sender]]
+# name = "AMQPConnectionFactory"
+# parameter.hostname = "localhost"
+# parameter.port = 5672
+# parameter.username = "guest"
+# parameter.password = "guest"
+
+# [[transport.rabbitmq.listener]]
+# name = "AMQPConnectionFactory"
+# parameter.hostname = "localhost"
+# parameter.port = 5672
+# parameter.username = "guest"
+# parameter.password = "guest"
+
+# [[transport.phase_order]]
+# Entire phase_order list can be found under 'Axis2 Phases' in <MI_HOME>/repository/resources/conf/deployment-full.toml.
+# If an Axis2 phase needs to added/removed, include all of the
+# Inflow, OutFlow & OutFaultFlow phases found in the deployment-full.toml and change them as needed.
+
+# [system.parameter]
+# 'key' = "value"
+
+[[datasource]]
+id = "VouchersDB"  # "WSO2_COORDINATION_DB"
+url = "jdbc:postgresql://mule-db-test1.db.eu.addisonleeglobal.org:5432/vouchers"
+username = "mule_vouchers"
+password = "$secret{vouchers_password}"
+driver = "org.postgresql.Driver"
+
+# [management_api]
+# protocols = "http"
+
+# [[internal_apis.users]]
+# user.name = "user-1"
+# user.password = "pwd-1"
+
+# [transaction_counter]
+# enable = true
+# data_source = "WSO2CarbonDB"
+# update_interval = 2
+
+# [mediation]
+# synapse.global_timeout_interval = "120000"  # interval in milliseconds
+
+[secrets]
+vouchers_password = "AuwtsGN5FQWOVbb5h5D+O8vfrmAY6mzwUIr/osWLUXGzL6p132D7+kLm6Yc1H9t+pBHbaVFEHawHRlaMdpq9/MkLWW9Db2tTNxSEKEoySmfwcq1C7HGdVNPENq5pJfZdY+8/dQn1WItikHthWctYmcI2igAEFH4ILgPOMgvgb/yHv5XS60aV3liq4P7Tv1FA5NaWq5SZxzP3j2kJR+KCBwg2gjPHP5oWSTjiWdzJ/uQrZKUXidf/SgoDDgao8e1VF7VCm97RcEkVOIwf2m2OZrTBfJ+/DuA+kgd7+OiKE95yXu/t1fa+f9QFooEbPu8zYHnYzKMFlaRP4U1sGXQiPg=="
+dbpass1 = "Hkc342KITR7ErcBngz9s63TyupmvCm0Ff6sxoFO22ZMgCYHFeCtcZMc0WGc6YOORxbKLT8FRnKKtJw117EzKM7egnMgCbNirWRbefpML+kpYw/RzZ0ghngywNti0K5Rm3L096ym+Oed6/etbrCOY7huWJh+z2Cdvl5TW0r9voCJb5tc76iv756/o9s1Krs52ru/lscNIQkNHbMUnqxRH7GY3v5hZ0JJ1/65IH89yEIyjHWDWbzJqvj6bT99afLCU5a2CMQxdoHMLQg2Tv9tSZ4i8ouBD8zP1KBhNKMxSrCWiGp+xD+OTiSGBWgnXhNEtlSQSmrR/pkzXGeqe+6Gx3A=="
+jobuuid = "cE+tVXNmlUCEna1ZsoDfcs6wNLjgoh6DwhrZ0X8tT1Lh59eDAKCDU1qEVp//JWzyiPbCdTXTku4c0r2ar0I7hcce2v1M/pwBxITp04diHPJtzdVcduEZO8X/9SjMMuGCzbLmo6/dKbC4NMRxD5IigcS6hX8uD560rpXymWpXFCsqCYuVUrqeNFwAdKdKG6H6hQyB5lCCucSOwCnQ5Id5MGWZg7F5rv3sUfFClflm3j5mYAuzli+yQbnDUkV6YAyrvZV0Itz5Drd2G0tq3XSaVn2x2C6dxNKyrXid189hzHlT/He1Nf6PRBWYDBB7S61mzzhC0rzQpjtdZtHXVTGctg=="
+
+# [[service_catalog]]
+# apim_host = "https://localhost:9443"
+# enable = true
+# username = "admin"
+# password = "admin"
+
+# [dashboard_config]
+# dashboard_url = "https://localhost:9743/dashboard/api/"
+
+# [integration.transaction_counter]
+# enable = true
+# server_id = "MI_node_1"
+# producer_counting_thread_pool_size = 10
+# producer_scheduled_interval = 10
+# max_transaction_count_per_record = 20
+# min_transaction_count_per_record = 5
+# record_queue_size = 1000
+# publisher_scheduled_interval = 5
+# publisher_max_batch_size = 100
+# publisher_max_retries = 3
+# store_impl = "org.wso2.integration.transaction.counter.store.TransactionRecordStoreImpl"
+# service_url = "https://localhost:8080/transactions/records"
+# service_username = "admin"
+# service_password = "admin"

@@ -1,0 +1,103 @@
+<data name="Vouchers" serviceNamespace="" serviceGroup="" transports="http https" disableStreaming="true">
+    <description/>
+    <config id="vouchers">
+        <property name="carbon_datasource_name">VouchersDB</property>
+    </config>
+    <property name="defaultStorageType">json</property>
+    <query id="get_vouchers_query" useConfig="vouchers">
+        <sql>SELECT voucher_code, user_id, account_id, count FROM vouchers.vouchers_sbox.vouchers WHERE account_id = account_id</sql>
+        <param name="account_id" paramType="SCALAR" sqlType="STRING" type="IN"/>
+        <result outputType="json">
+            {"Vouchers":{"Voucher":[{"voucher_code":"$voucher_code","user_id":"$user_id","account_id":"$account_id","count":"$count"}]}}
+        </result>
+    </query>
+    <resource method="GET" path="/vouchers/{accountId}">
+        <call-query href="get_vouchers_query">
+            <with-param name="account_id" query-param="accountId"/>
+        </call-query>
+    </resource>
+    <query id="post_vouchers_query" useConfig="vouchers">
+        <sql>INSERT INTO vouchers.vouchers_sbox.vouchers
+            (issue_dt, voucher_code, user_id, account_id, expiry_dt, "value", uses, "count", status)
+            VALUES
+            (:issue_dt, :voucher_code, :user_id, :account_id, :expiry_dt, :value, :uses, :count, :status) Returning voucher_code, user_id, account_id, "count"
+        </sql>
+        <param name="issue_dt" paramType="SCALAR" sqlType="DATE" type="IN"/>
+        <param name="voucher_code" paramType="SCALAR" sqlType="STRING" type="IN"/>
+        <param name="user_id" paramType="SCALAR" sqlType="STRING" type="IN"/>
+        <param name="account_id" paramType="SCALAR" sqlType="STRING" type="IN"/>
+        <param name="expiry_dt" paramType="SCALAR" sqlType="DATE" type="IN"/>
+        <param name="value" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+        <param name="uses" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+        <param name="count" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+        <param name="status" paramType="SCALAR" sqlType="STRING" type="IN"/>
+        <result outputType="json">
+            {"Vouchers":{"Voucher":[{"voucher_code":"$voucher_code","user_id":"$user_id","account_id":"$account_id","count":"$count"}]}}
+        </result>
+        <properties>
+            <property name="fetchDirection">forward</property>
+            <property name="forceStoredProc">false</property>
+            <property name="forceJDBCBatchRequests">false</property>
+        </properties>
+    </query>
+    <resource method="POST" path="/vouchers">
+        <call-query href="post_vouchers_query">
+            <with-param name="issue_dt" query-param="issue_dt"/>
+            <with-param name="voucher_code" query-param="voucher_code"/>
+            <with-param name="user_id" query-param="user_id"/>
+            <with-param name="account_id" query-param="account_id"/>
+            <with-param name="expiry_dt" query-param="expiry_dt"/>
+            <with-param name="value" query-param="value"/>
+            <with-param name="uses" query-param="uses"/>
+            <with-param name="count" query-param="count"/>
+            <with-param name="status" query-param="status"/>
+        </call-query>
+    </resource>
+    <query id="put_vouchers_query" useConfig="vouchers">
+        <sql>
+            UPDATE vouchers_sbox.vouchers
+            SET user_id = :user_id, account_id = :account_id, count = :count
+            WHERE voucher_code = :voucher_code
+            RETURNING voucher_code, user_id, account_id, count
+        </sql>
+        <param name="voucher_code" paramType="SCALAR" sqlType="STRING" type="IN"/>
+        <param name="user_id" paramType="SCALAR" sqlType="STRING" type="IN"/>
+        <param name="account_id" paramType="SCALAR" sqlType="STRING" type="IN"/>
+        <param name="count" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+        <result useColumnNumbers="true" outputType="json">
+            {
+                "voucher_code": "$1",
+                "user_id": "$2",
+                "account_id": "$3",
+                "count": "$4"
+            }
+        </result>
+        <properties>
+            <property name="fetchDirection">forward</property>
+            <property name="forceStoredProc">false</property>
+            <property name="forceJDBCBatchRequests">false</property>
+        </properties>
+    </query>
+    <resource method="PUT" path="/vouchers" disableStreaming="true">
+        <call-query href="put_vouchers_query">
+            <with-param name="voucher_code" query-param="voucher_code"/>
+            <with-param name="user_id" query-param="user_id"/>
+            <with-param name="account_id" query-param="account_id"/>
+            <with-param name="count" query-param="count"/>
+        </call-query>
+    </resource>
+    <query id="delete_vouchersvouchercode_query" useConfig="vouchers">
+        <sql>DELETE FROM vouchers.vouchers_sbox.vouchers WHERE user_id = :user_id</sql>
+        <param name="user_id" paramType="SCALAR" sqlType="STRING" type="IN"/>
+        <properties>
+            <property name="fetchDirection">forward</property>
+            <property name="forceStoredProc">false</property>
+            <property name="forceJDBCBatchRequests">false</property>
+        </properties>
+    </query>
+    <resource method="DELETE" path="/vouchers">
+        <call-query href="delete_vouchersvouchercode_query">
+            <with-param name="user_id" column="user_id"/>
+        </call-query>
+    </resource>
+</data>
