@@ -19,7 +19,7 @@
                         }
                     ]
                 }
-            }        
+            }
         </result>
     </query>
     <resource method="GET" path="/vouchers/{accountId}">
@@ -54,7 +54,8 @@
                         }
                     ]
                 }
-            }        </result>
+            }
+        </result>
         <properties>
             <property name="fetchDirection">forward</property>
             <property name="forceStoredProc">false</property>
@@ -87,15 +88,11 @@
         <param name="count" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
         <result useColumnNumbers="true" outputType="json">
             {
-                "Vouchers": {
-                    "Voucher": [
-                        {
-                            "voucher_code": "$voucher_code",
-                            "user_id": "$user_id",
-                            "account_id": "$account_id",
-                            "count": "$count"
-                        }
-                    ]
+                "voucher": {
+                    "voucher_code": "$1",
+                    "user_id": "$2",
+                    "account_id": "$3",
+                    "count": "$4"
                 }
             }
         </result>
