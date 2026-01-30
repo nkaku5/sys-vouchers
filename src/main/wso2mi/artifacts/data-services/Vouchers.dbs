@@ -5,7 +5,10 @@
     </config>
     <property name="defaultStorageType">json</property>
     <query id="get_vouchers_query" useConfig="vouchers">
-        <sql>SELECT voucher_code, user_id, account_id, count FROM vouchers.vouchers_sbox.vouchers WHERE account_id = account_id</sql>
+        <sql>
+            SELECT voucher_code, user_id, account_id, count FROM vouchers.vouchers_sbox.vouchers 
+            WHERE account_id = account_id
+        </sql>
         <param name="account_id" paramType="SCALAR" sqlType="STRING" type="IN"/>
         <result outputType="json">
             {
@@ -28,7 +31,8 @@
         </call-query>
     </resource>
     <query id="post_vouchers_query" useConfig="vouchers">
-        <sql>INSERT INTO vouchers.vouchers_sbox.vouchers
+        <sql>
+            INSERT INTO vouchers.vouchers_sbox.vouchers
             (issue_dt, voucher_code, user_id, account_id, expiry_dt, "value", uses, "count", status)
             VALUES
             (:issue_dt, :voucher_code, :user_id, :account_id, :expiry_dt, :value, :uses, :count, :status) Returning voucher_code, user_id, account_id, "count"
@@ -111,7 +115,10 @@
         </call-query>
     </resource>
     <query id="delete_vouchersvouchercode_query" useConfig="vouchers">
-        <sql>DELETE FROM vouchers.vouchers_sbox.vouchers WHERE user_id = :user_id</sql>
+        <sql>
+            DELETE FROM vouchers.vouchers_sbox.vouchers 
+            WHERE user_id = :user_id
+        </sql>
         <param name="user_id" paramType="SCALAR" sqlType="STRING" type="IN"/>
         <properties>
             <property name="fetchDirection">forward</property>
