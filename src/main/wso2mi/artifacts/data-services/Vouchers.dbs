@@ -7,7 +7,7 @@
     <query id="get_vouchers_query" useConfig="vouchers">
         <sql>
             SELECT voucher_code, user_id, account_id, count FROM vouchers.vouchers_sbox.vouchers 
-            WHERE account_id = account_id
+            WHERE account_id = :account_id
         </sql>
         <param name="account_id" paramType="SCALAR" sqlType="STRING" type="IN"/>
         <result outputType="json">
